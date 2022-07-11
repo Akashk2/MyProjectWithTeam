@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.rms.model.CandidatesDetails;
 import com.rms.model.FinalResponse;
 import com.rms.service.RmsService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 public class RmsController {
@@ -25,8 +28,9 @@ public class RmsController {
     public ModelAndView admissionForm() {
         return new ModelAndView("addCandidate");
     }
+	
 	@PostMapping("/addCandidate")
-	public String addCandidate(@ModelAttribute CandidatesDetails candidatesDetails) {
+	public String addCandidate(@RequestBody CandidatesDetails candidatesDetails) {
 		return rmsService.addCandidate(candidatesDetails);
 	}
 	
@@ -52,7 +56,7 @@ public class RmsController {
 	
 	@GetMapping("/getTotalRes")
 	public FinalResponse getTotalres() {
-		return rmsService.getTotalres();
+		return rmsService.resumeUpdated();
 	}
 	
 	@GetMapping("/lastMonth")

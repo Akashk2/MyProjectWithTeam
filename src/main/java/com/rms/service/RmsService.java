@@ -156,6 +156,57 @@ public class RmsService {
 		return finalResponse;
 	}
 	
+	public FinalResponse resumeUpdated() {
+		Collection<CandidatesDetails> newUploadsByRecuiter = rmsDao.countCandidateUpdatedInOneMonth();
+		Collection<CandidatesDetails> newUploadsByCandidate = rmsDao.countCandidateUpdatedInOneWeek();
+		Collection<CandidatesDetails> resumeDeactivated = rmsDao.countCandidateUpdatedInOneYear();
+//		Collection<CandidatesDetails> totalres = rmsDao.getTotalres();
+		FinalResponse finalResponse = new FinalResponse();
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		try {
+			
+			if(newUploadsByRecuiter!=null) {
+				map.put("Resumes Updated in the Last 30 days", newUploadsByCandidate.size());
+				
+			}else {
+				map.put("Resumes Updated in the Last 30 days", 0);
+			}
+			
+			if(newUploadsByCandidate!=null) {
+				map.put("Resumes Not Updated for > 30 days to 1 Year", newUploadsByRecuiter.size()-1);
+				
+			}else {
+				map.put("Resumes Not Updated for > 30 days to 1 Year", 0);
+			}
+			
+			if(resumeDeactivated!=null) {
+				map.put("Not Updated last>1 Year", resumeDeactivated.size());
+				
+			}else {
+				map.put("Not Updated last>1 Year", 0);
+			}
+//			if(totalres!=null) {
+//				map.put("Total Resume", totalres.size());
+//				
+//			}else {
+//				map.put("Total Resume", 0);
+//			}
+			finalResponse.setMessage(String.valueOf(newUploadsByRecuiter.size()+newUploadsByCandidate.size()+resumeDeactivated.size()-1));
+			finalResponse.setData(map);
+			finalResponse.setStatus(true);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return finalResponse;
+	}
+	
+	/*
+	 * Author Akash kumar
+	 * Resume Upload Summary
+	 * return FinalResponse
+	 * 
+	 */
 	public FinalResponse resumeUploadsSummary() {
 		Collection<CandidatesDetails> newUploadsByRecuiter = rmsDao.newUploadsByRecuiter();
 		Collection<CandidatesDetails> newUploadsByCandidate = rmsDao.newUploadsByCandidate();

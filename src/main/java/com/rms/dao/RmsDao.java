@@ -14,7 +14,7 @@ public interface RmsDao extends JpaRepository<CandidatesDetails, Integer> {
 	@Query(value = "SELECT * FROM candidates_details WHERE month(last_updated_on)=month(now())", nativeQuery = true)
 	Collection<CandidatesDetails> countCandidateUpdatedInOneWeek();
 	
-	@Query(value = "SELECT * FROM candidates_details WHERE last_updated_on<now() - interval 1 month-1", nativeQuery = true)
+	@Query(value = "SELECT * FROM candidates_details WHERE DATE(last_updated_on) <= DATE(NOW()) - INTERVAL 31 DAY", nativeQuery = true)
 	Collection<CandidatesDetails> countCandidateUpdatedInOneMonth();
 	
 	@Query(value = "select * from candidates_details where last_updated_on < DATE_SUB(NOW(),INTERVAL 1 YEAR);", nativeQuery = true)
